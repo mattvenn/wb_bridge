@@ -22,7 +22,7 @@ module wb_bridge_2way
     parameter UFP_BASE_MASK = 32'hff00_0000,
 
     parameter UFP_BUSA_OFFSET = 32'h0000_0000,
-    parameter UFP_BUSB_OFFSET = 32'h00ff_ffc0,
+    parameter UFP_BUSB_OFFSET = 32'h00ff_fc00,
 
     parameter BUSA_ADDR_WIDTH = 32,
     parameter BUSA_BASE_ADDR = 32'h3000_0000,

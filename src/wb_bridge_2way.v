@@ -74,7 +74,7 @@ module wb_bridge_2way
 wire bridge_select;
 assign bridge_select = (wbs_adr_i & UFP_BASE_MASK) == UFP_BASE_ADDR;
 
-wire bus_a_or_b;
+wire bus_a_or_b; // low means bus a, high is bus b
 assign bus_a_or_b = (wbs_adr_i & ~UFP_BASE_MASK) >= UFP_BUSB_OFFSET;
 
 wire bus_a_select, bus_b_select;
@@ -108,6 +108,31 @@ assign wbm_b_adr_o = bus_b_address[BUSB_ADDR_WIDTH-1:0];
 assign wbs_ack_o = (wbm_a_ack_i & bus_a_select) | (wbm_b_ack_i & bus_b_select);
 assign wbs_dat_o = (wbm_a_dat_i & {32{bus_a_select}}) | (wbm_b_dat_i & {32{bus_b_select}});
 
+`ifdef FORMAL
+
+    always @(*) begin
+        // only one bus is active
+        exclusive_bus:   assert(bus_a_select + bus_b_select <= 1);
+
+        // bus A
+        if(bus_a_select) begin
+            a_dat_o:    assert(wbm_a_dat_o    == wbs_dat_i      );
+            a_stb_o:    assert(wbm_a_stb_o    == wbs_stb_i      );
+
+            a_dat_i:    assert(wbs_dat_o      == wbm_a_dat_i    );
+            a_ack_i:    assert(wbm_a_ack_i    == wbs_ack_o      );
+        // bus B
+        end else if(bus_b_select) begin
+            b_dat_o:    assert(wbm_b_dat_o    == wbs_dat_i      );
+            b_stb_o:    assert(wbm_b_stb_o    == wbs_stb_i      );
+            b_dat_i:    assert(wbs_dat_o      == wbm_b_dat_i    );
+
+            b_ack_i:    assert(wbm_b_ack_i    == wbs_ack_o      );
+        end
+        
+    end
+
+`endif
 endmodule	// wb_bridge_2way
 
 `default_nettype wire

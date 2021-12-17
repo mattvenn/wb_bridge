@@ -44,7 +44,8 @@ async def test_wb_bridge_2way(dut):
         "adr"   :   "wbs_adr_i",
         "datwr" :   "wbs_dat_i",
         "datrd" :   "wbs_dat_o",
-        "ack"   :   "wbs_ack_o"
+        "ack"   :   "wbs_ack_o",
+        "sel"   :   "wbs_sel_i",
     }
 
     wbsa_signals_dict = {
@@ -52,9 +53,10 @@ async def test_wb_bridge_2way(dut):
         "stb"   :   "wbm_a_stb_o",
         "we"    :   "wbm_a_we_o",
         "adr"   :   "wbm_a_adr_o",
-        "datwr" :   "wbm_a_dat_i",
-        "datrd" :   "wbm_a_dat_o",
-        "ack"   :   "wbm_a_ack_i"
+        "datrd" :   "wbm_a_dat_i",
+        "datwr" :   "wbm_a_dat_o",
+        "ack"   :   "wbm_a_ack_i",
+        "sel"   :   "wbm_a_sel_o"
     }
 
     wbsb_signals_dict = {
@@ -62,9 +64,10 @@ async def test_wb_bridge_2way(dut):
         "stb"   :   "wbm_b_stb_o",
         "we"    :   "wbm_b_we_o",
         "adr"   :   "wbm_b_adr_o",
-        "datwr" :   "wbm_b_dat_i",
-        "datrd" :   "wbm_b_dat_o",
-        "ack"   :   "wbm_b_ack_i"
+        "datrd" :   "wbm_b_dat_i",
+        "datwr" :   "wbm_b_dat_o",
+        "ack"   :   "wbm_b_ack_i",
+        "sel"   :   "wbm_b_sel_o"
     }
 
     wbm_bus = WishboneMaster(dut, "", dut.wb_clk_i, width=32, timeout=10, signals_dict=wbm_signals_dict)
@@ -76,11 +79,13 @@ async def test_wb_bridge_2way(dut):
     busb_end_adr = 0x30ff_ffff
 
     wbsa_size = busb_base_adr - busa_base_adr
-    wbsa_bus = WishboneRAM(dut, dut.wb_clk_i, wbsa_signals_dict, wbsa_size)
+    wbsa_bus = WishboneRAM(dut, dut.wb_clk_i, wbsa_signals_dict, wbsa_size, busa_base_adr)
+    print(wbsa_size)
     init_ram(wbsa_bus, wbsa_size, busa_base_adr)
 
     wbsb_size = busb_end_adr - busb_base_adr + 1
-    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsb_signals_dict, wbsb_size)
+    print(wbsb_size)
+    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsb_signals_dict, wbsb_size, busb_base_adr)
     init_ram(wbsb_bus, wbsb_size, busb_base_adr)
 
     await reset(dut)

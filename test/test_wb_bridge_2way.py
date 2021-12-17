@@ -71,8 +71,6 @@ async def test_wb_bridge_2way(dut):
     }
 
     wbm_bus = WishboneMaster(dut, "", dut.wb_clk_i, width=32, timeout=10, signals_dict=wbm_signals_dict)
-#    wbsa_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
-#    wbsb_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
 
     busa_base_adr = 0x3000_0000
     busb_base_adr = 0x30ff_fc00
@@ -85,18 +83,11 @@ async def test_wb_bridge_2way(dut):
 
     wbsb_size = busb_end_adr - busb_base_adr + 1
     print(wbsb_size)
-    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsb_signals_dict, wbsb_size, busb_base_adr)
+    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsb_signals_dict, wbsb_size, 0)
     init_ram(wbsb_bus, wbsb_size, busb_base_adr)
 
     await reset(dut)
 
-    dut.wbs_sel_i = 0xf
-
-#    wbsa_bus._recvQ.clear()
-#    wbsb_bus._recvQ.clear()
-
     await wbm_write(wbm_bus, busa_base_adr, 0xdeadbeef)
-#    assert wbsa_bus._recvQ.count == 1
-#    wbsa_bus._recvQ.clear()
 
-
+    await wbm_write(wbm_bus, busb_base_adr, 0xc00ffeee)

@@ -1,0 +1,13 @@
+[options]
+mode prove
+depth 5
+
+[engines]
+smtbmc
+
+[script]
+read -formal wb_bridge_2way.v
+prep -top wb_bridge_2way
+
+[files]
+src/wb_bridge_2way.v

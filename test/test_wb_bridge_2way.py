@@ -57,7 +57,7 @@ async def test_wb_bridge_2way(dut):
         "ack"   :   "wbm_a_ack_i"
     }
 
-    wbsa_signals_dict = {
+    wbsb_signals_dict = {
         "cyc"   :   "wbm_b_cyc_o",
         "stb"   :   "wbm_b_stb_o",
         "we"    :   "wbm_b_we_o",
@@ -80,7 +80,7 @@ async def test_wb_bridge_2way(dut):
     init_ram(wbsa_bus, wbsa_size, busa_base_adr)
 
     wbsb_size = busb_end_adr - busb_base_adr + 1
-    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsa_signals_dict, wbsb_size)
+    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsb_signals_dict, wbsb_size)
     init_ram(wbsb_bus, wbsb_size, busb_base_adr)
 
     await reset(dut)

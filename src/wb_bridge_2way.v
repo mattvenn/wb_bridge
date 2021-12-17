@@ -125,8 +125,8 @@ assign wbs_dat_o = (wbm_a_dat_i & {32{bus_a_select}}) | (wbm_b_dat_i & {32{bus_b
         end else if(bus_b_select) begin
             b_dat_o:    assert(wbm_b_dat_o    == wbs_dat_i      );
             b_stb_o:    assert(wbm_b_stb_o    == wbs_stb_i      );
-            b_dat_i:    assert(wbs_dat_o      == wbm_b_dat_i    );
 
+            b_dat_i:    assert(wbs_dat_o      == wbm_b_dat_i    );
             b_ack_i:    assert(wbm_b_ack_i    == wbs_ack_o      );
         end
         

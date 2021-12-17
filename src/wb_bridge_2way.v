@@ -27,7 +27,7 @@ module wb_bridge_2way
     parameter BUSA_ADDR_WIDTH = 32,
     parameter BUSA_BASE_ADDR = 32'h3000_0000,
         
-    parameter BUSB_ADDR_WIDTH = 8,
+    parameter BUSB_ADDR_WIDTH = 10,
     parameter BUSB_BASE_ADDR = 32'h0000_0000
 )
 (

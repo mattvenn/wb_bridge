@@ -1,0 +1,87 @@
+[*]
+[*] GTKWave Analyzer v3.3.111 (w)1999-2020 BSI
+[*] Fri Dec 17 09:41:18 2021
+[*]
+[dumpfile] "/home/matt/work/asic-workshop/course/wb_bridge/wb_bridge_2way.vcd"
+[dumpfile_mtime] "Fri Dec 17 09:37:57 2021"
+[dumpfile_size] 2158
+[savefile] "/home/matt/work/asic-workshop/course/wb_bridge/wb_bridge_2way.gtkw"
+[timestart] 0
+[size] 2223 1206
+[pos] 63 98
+*-16.200001 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 343
+[signals_width] 670
+[sst_expanded] 1
+[sst_vpaned_height] 366
+@28
+wb_bridge_2way.bridge_select
+@22
+wb_bridge_2way.bus_a_address[31:0]
+wb_bridge_2way.bus_b_address[31:0]
+@28
+wb_bridge_2way.bus_a_or_b
+wb_bridge_2way.bus_a_select
+wb_bridge_2way.bus_b_select
+@200
+-
+@800200
+-wb
+@28
+wb_bridge_2way.wb_clk_i
+wb_bridge_2way.wb_rst_i
+wb_bridge_2way.wbs_ack_o
+@22
+wb_bridge_2way.wbs_adr_i[31:0]
+@28
+wb_bridge_2way.wbs_cyc_i
+@22
+wb_bridge_2way.wbs_dat_i[31:0]
+@23
+wb_bridge_2way.wbs_dat_o[31:0]
+@28
+wb_bridge_2way.wbs_stb_i
+@22
+wb_bridge_2way.wbs_sel_i[3:0]
+@28
+wb_bridge_2way.wbs_we_i
+@1000200
+-wb
+@200
+-
+@800200
+-wbm a
+@28
+wb_bridge_2way.wbm_a_ack_i
+@22
+wb_bridge_2way.wbm_a_adr_o[31:0]
+@28
+wb_bridge_2way.wbm_a_cyc_o
+@22
+wb_bridge_2way.wbm_a_dat_i[31:0]
+wb_bridge_2way.wbm_a_dat_o[31:0]
+wb_bridge_2way.wbm_a_sel_o[3:0]
+@28
+wb_bridge_2way.wbm_a_stb_o
+wb_bridge_2way.wbm_a_we_o
+@1000200
+-wbm a
+@800200
+-wbm b
+@28
+wb_bridge_2way.wbm_b_ack_i
+@22
+wb_bridge_2way.wbm_b_adr_o[7:0]
+@28
+wb_bridge_2way.wbm_b_cyc_o
+@22
+wb_bridge_2way.wbm_b_dat_i[31:0]
+wb_bridge_2way.wbm_b_dat_o[31:0]
+wb_bridge_2way.wbm_b_sel_o[3:0]
+@28
+wb_bridge_2way.wbm_b_stb_o
+wb_bridge_2way.wbm_b_we_o
+@1000200
+-wbm b
+[pattern_trace] 1
+[pattern_trace] 0

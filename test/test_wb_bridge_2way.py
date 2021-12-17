@@ -6,7 +6,7 @@ from cocotb.binary import BinaryValue
 from cocotb.triggers import RisingEdge, FallingEdge, ClockCycles
 from cocotbext.wishbone.driver import WishboneMaster, WBOp
 from cocotbext.wishbone.monitor import WishboneSlave
-
+from wb_ram import WishboneRAM
 
 async def reset(dut):
     dut.wb_rst_i = 1
@@ -16,19 +16,18 @@ async def reset(dut):
     await ClockCycles(dut.wb_clk_i, 10)
 
 
-async def test_wbm_set(wbm_bus, addr, value):
-    """
-    Test putting values into the given wishbone address.
-    """
+async def wbm_write(wbm_bus, addr, value):
     await wbm_bus.send_cycle([WBOp(addr, value)])
 
-async def test_wbm_get(wbm_bus, addr):
-    """
-    Test getting values from the given wishbone address.
-    """
+async def wbm_read(wbm_bus, addr):
     res_list = await wbm_bus.send_cycle([WBOp(addr)])
     rvalues = [entry.datrd for entry in res_list]
     return rvalues[0]
+
+
+def init_ram(ram_bus, size, prefix): 
+    for addr in range(size-1):
+        ram_bus.data[addr] = addr | prefix
 
 
 @cocotb.test()
@@ -69,18 +68,29 @@ async def test_wb_bridge_2way(dut):
     }
 
     wbm_bus = WishboneMaster(dut, "", dut.wb_clk_i, width=32, timeout=10, signals_dict=wbm_signals_dict)
-    wbsa_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
-    wbsb_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
-
-    await reset(dut)
+#    wbsa_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
+#    wbsb_bus = WishboneSlave(dut, "", dut.wb_clk_i, signals_dict=wbsa_signals_dict)
 
     busa_base_adr = 0x3000_0000
     busb_base_adr = 0x30ff_fc00
+    busb_end_adr = 0x30ff_ffff
 
-    wbsa_bus._recvQ.clear()
-    wbsb_bus._recvQ.clear()
+    wbsa_size = busb_base_adr - busa_base_adr
+    wbsa_bus = WishboneRAM(dut, dut.wb_clk_i, wbsa_signals_dict, wbsa_size)
+    init_ram(wbsa_bus, wbsa_size, busa_base_adr)
 
-    await test_wbm_set(wbm_bus, busa_base_adr, 0xdeadbeef)
+    wbsb_size = busb_end_adr - busb_base_adr + 1
+    wbsb_bus = WishboneRAM(dut, dut.wb_clk_i, wbsa_signals_dict, wbsb_size)
+    init_ram(wbsb_bus, wbsb_size, busb_base_adr)
+
+    await reset(dut)
+
+    dut.wbs_sel_i = 0xf
+
+#    wbsa_bus._recvQ.clear()
+#    wbsb_bus._recvQ.clear()
+
+    await wbm_write(wbm_bus, busa_base_adr, 0xdeadbeef)
 #    assert wbsa_bus._recvQ.count == 1
 #    wbsa_bus._recvQ.clear()
 

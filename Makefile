@@ -3,7 +3,10 @@ export COCOTB_REDUCED_LOG_FMT=1
 export PYTHONPATH := test:$(PYTHONPATH)
 export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 
-all: test_wb_bridge_2way
+all: test_wb_bridge_2way formal
+
+formal:
+	sby -f properties.sby
 
 test_wb_bridge_2way:
 	rm -rf sim_build/ results.xml

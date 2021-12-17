@@ -2,3 +2,4 @@ sim_build/*
 *.pyc
 results.xml
 *.vcd
+properties

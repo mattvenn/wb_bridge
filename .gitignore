@@ -1,3 +1,4 @@
-sim_build/
+sim_build/*
+*.pyc
 results.xml
 *.vcd

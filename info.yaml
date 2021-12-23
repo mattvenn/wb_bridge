@@ -1,0 +1,15 @@
+--- 
+# information
+project: 
+  title: "OpenRAM wishbone bridge"
+  license: LICENSE
+  module_name: 'wb_bridge_2way'
+
+# source
+source:
+    - src/wb_bridge_2way.v
+
+gds:
+  directory: "gds"
+  gds_filename: "wb_bridge_2way.gds"
+  lef_filename: "wb_bridge_2way.lef"

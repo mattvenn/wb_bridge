@@ -11,7 +11,7 @@ project:
 source:
     - src/wb_bridge_2way.v
 
-gds:
-  directory: "gds"
+final:
+  directory: "final"
   gds_filename: "wb_bridge_2way.gds"
   lef_filename: "wb_bridge_2way.lef"
